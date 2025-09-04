@@ -61,7 +61,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				// Custom space theme colors
+				'earth-blue': 'hsl(var(--earth-blue))',
+				'earth-green': 'hsl(var(--earth-green))',
+				'space-dark': 'hsl(var(--space-dark))',
+				'satellite-gold': 'hsl(var(--satellite-gold))',
+				'warning-orange': 'hsl(var(--warning-orange))',
+				'success-green': 'hsl(var(--success-green))'
+			},
+			backgroundImage: {
+				'gradient-space': 'var(--gradient-space)',
+				'gradient-earth': 'var(--gradient-earth)',
+				'gradient-hero': 'var(--gradient-hero)',
+				'gradient-card': 'var(--gradient-card)'
+			},
+			boxShadow: {
+				'glow': 'var(--shadow-glow)',
+				'card': 'var(--shadow-card)',
+				'elevation': 'var(--shadow-elevation)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -88,7 +106,10 @@ export default {
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'spin-slow': 'spin-slow 20s linear infinite',
+				'pulse-glow': 'pulse-glow 3s ease-in-out infinite alternate'
 			}
 		}
 	},
