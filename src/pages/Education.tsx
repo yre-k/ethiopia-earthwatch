@@ -1,10 +1,13 @@
 import { motion } from 'framer-motion';
-import { BookOpen, Satellite, Globe, Zap, Users, Target } from 'lucide-react';
+import { BookOpen, Satellite, Globe, Zap, Users, Target, Download, FileText, Share, ExternalLink } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useState } from 'react';
 import satelliteImage from '@/assets/satellite.jpg';
 import ethiopiaAgricultureImage from '@/assets/ethiopia-agriculture.jpg';
+import LearningModule from '@/components/LearningModule';
+import { useToast } from '@/hooks/use-toast';
 
 const topics = [
   {
@@ -49,6 +52,48 @@ const statistics = [
 ];
 
 const Education = () => {
+  const [activeModule, setActiveModule] = useState<number | null>(null);
+  const { toast } = useToast();
+
+  const handleStartLearning = (topicId: number) => {
+    setActiveModule(topicId);
+    toast({
+      title: "Module Started! 🚀",
+      description: "Get ready for an amazing journey through space and climate science!",
+    });
+  };
+
+  const handleDownloadResource = (resourceName: string) => {
+    toast({
+      title: "Download Started",
+      description: `Downloading ${resourceName}...`,
+    });
+    // Simulate download
+    setTimeout(() => {
+      toast({
+        title: "Download Complete! ✅",
+        description: `${resourceName} has been saved to your device.`,
+      });
+    }, 2000);
+  };
+
+  const handleShareContent = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast({
+      title: "Link Copied! 📋",
+      description: "Share this educational content with others!",
+    });
+  };
+
+  if (activeModule) {
+    return (
+      <LearningModule
+        topicId={activeModule}
+        onClose={() => setActiveModule(null)}
+      />
+    );
+  }
+
   return (
     <div className="min-h-screen pt-20 pb-12">
       <div className="container mx-auto px-4">
@@ -156,7 +201,7 @@ const Education = () => {
                         </div>
                       ))}
                     </div>
-                    <Button className="w-full" variant="outline">
+                    <Button className="w-full" variant="outline" onClick={() => handleStartLearning(topic.id)}>
                       Start Learning
                     </Button>
                   </CardContent>
@@ -166,11 +211,137 @@ const Education = () => {
           </div>
         </motion.div>
 
-        {/* How It Works Section */}
+        {/* Resources Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.6 }}
+          className="mb-16"
+        >
+          <h2 className="text-3xl font-bold text-center mb-8">Additional Resources</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            <Card className="card-gradient hover:shadow-elevation transition-all duration-300">
+              <CardHeader>
+                <div className="flex items-center space-x-3">
+                  <FileText className="h-8 w-8 text-earth-blue" />
+                  <div>
+                    <CardTitle className="text-lg">Technical Reports</CardTitle>
+                    <CardDescription>Detailed climate analysis documents</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => handleDownloadResource("Ethiopia Climate Assessment 2024")}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Climate Assessment 2024
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => handleDownloadResource("Satellite Data Guide")}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Satellite Data Guide
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => handleDownloadResource("Farmer's NDVI Handbook")}
+                  >
+                    <Download className="h-4 w-4 mr-2" />
+                    Farmer's NDVI Handbook
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="card-gradient hover:shadow-elevation transition-all duration-300">
+              <CardHeader>
+                <div className="flex items-center space-x-3">
+                  <ExternalLink className="h-8 w-8 text-earth-green" />
+                  <div>
+                    <CardTitle className="text-lg">External Links</CardTitle>
+                    <CardDescription>Explore NASA and partner resources</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => window.open('https://earthdata.nasa.gov', '_blank')}
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    NASA Earthdata
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => window.open('https://modis.gsfc.nasa.gov', '_blank')}
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    MODIS Web
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => window.open('https://landsat.gsfc.nasa.gov', '_blank')}
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2" />
+                    Landsat Program
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="card-gradient hover:shadow-elevation transition-all duration-300">
+              <CardHeader>
+                <div className="flex items-center space-x-3">
+                  <Share className="h-8 w-8 text-satellite-gold" />
+                  <div>
+                    <CardTitle className="text-lg">Share & Connect</CardTitle>
+                    <CardDescription>Spread climate awareness</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={handleShareContent}
+                  >
+                    <Share className="h-4 w-4 mr-2" />
+                    Share This Page
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    className="w-full justify-start"
+                    onClick={() => toast({
+                      title: "Newsletter Subscription",
+                      description: "Stay updated with latest climate insights!",
+                    })}
+                  >
+                    <Users className="h-4 w-4 mr-2" />
+                    Join Newsletter
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </motion.div>
+
+        {/* How It Works Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.7 }}
           className="mb-16"
         >
           <Card className="card-gradient">

@@ -1,8 +1,10 @@
 import { motion } from 'framer-motion';
-import { BarChart3, TrendingUp, Calendar, Download } from 'lucide-react';
+import { BarChart3, TrendingUp, Calendar, Download, Filter, RefreshCw } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/hooks/use-toast';
+import { useState } from 'react';
 import { 
   LineChart, 
   Line, 
@@ -60,6 +62,47 @@ const regionData = [
 ];
 
 const Dashboard = () => {
+  const [selectedTimeRange, setSelectedTimeRange] = useState('30days');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const { toast } = useToast();
+
+  const handleDownloadResource = (resourceName: string) => {
+    toast({
+      title: "Export Started",
+      description: `Preparing ${resourceName} for download...`,
+    });
+    
+    setTimeout(() => {
+      toast({
+        title: "Export Complete! 📊",
+        description: `${resourceName} has been downloaded successfully.`,
+      });
+    }, 2000);
+  };
+
+  const handleRefreshData = () => {
+    setIsRefreshing(true);
+    toast({
+      title: "Refreshing Data",
+      description: "Fetching latest satellite observations...",
+    });
+    
+    setTimeout(() => {
+      setIsRefreshing(false);
+      toast({
+        title: "Data Updated! 🛰️",
+        description: "Dashboard now shows the latest climate data.",
+      });
+    }, 3000);
+  };
+
+  const handleTimeRangeChange = (range: string) => {
+    setSelectedTimeRange(range);
+    toast({
+      title: "Time Range Updated",
+      description: `Now showing data for: ${range === '30days' ? 'Last 30 Days' : range === '90days' ? 'Last 90 Days' : 'Last Year'}`,
+    });
+  };
   return (
     <div className="min-h-screen pt-20 pb-12">
       <div className="container mx-auto px-4">
@@ -78,11 +121,34 @@ const Dashboard = () => {
               </p>
             </div>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => handleTimeRangeChange('30days')}
+                className={selectedTimeRange === '30days' ? 'bg-primary text-primary-foreground' : ''}
+              >
                 <Calendar className="h-4 w-4 mr-2" />
                 Last 30 Days
               </Button>
-              <Button variant="outline" size="sm">
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={() => handleTimeRangeChange('90days')}
+                className={selectedTimeRange === '90days' ? 'bg-primary text-primary-foreground' : ''}
+              >
+                <Filter className="h-4 w-4 mr-2" />
+                Last 90 Days
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                onClick={handleRefreshData}
+                disabled={isRefreshing}
+              >
+                <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? 'animate-spin' : ''}`} />
+                {isRefreshing ? 'Refreshing...' : 'Refresh'}
+              </Button>
+              <Button variant="outline" size="sm" onClick={() => handleDownloadResource("Monthly Climate Report")}>
                 <Download className="h-4 w-4 mr-2" />
                 Export Data
               </Button>

@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { ArrowDown, Satellite, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import earthHero from '@/assets/earth-hero.jpg';
 
 const HeroSection = () => {
@@ -94,20 +95,21 @@ const HeroSection = () => {
           transition={{ duration: 0.8, delay: 0.3 }}
           className="flex flex-col sm:flex-row gap-4 justify-center mb-12"
         >
-          <Button
-            size="lg"
-            className="bg-gradient-earth hover:shadow-glow transition-all duration-300 text-lg px-8 py-6"
-          >
-            <Globe className="mr-2 h-5 w-5" />
-            Explore Live Data
-          </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            className="border-earth-blue text-earth-blue hover:bg-earth-blue/10 text-lg px-8 py-6"
-          >
-            Learn More
-          </Button>
+              <Link to="/dashboard">
+                <Button size="lg" className="bg-gradient-earth hover:shadow-glow transition-all duration-300">
+                  <Globe className="mr-2 h-5 w-5" />
+                  Explore Live Data
+                </Button>
+              </Link>
+              <Link to="/education">
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="border-earth-blue text-earth-blue hover:bg-earth-blue/10 text-lg px-8 py-6"
+                >
+                  Learn More
+                </Button>
+              </Link>
         </motion.div>
 
         {/* Scroll Indicator */}
